@@ -1,7 +1,36 @@
-import Image from 'next/image';
-import React, { Fragment } from 'react';
+"use client";
 
-const Search = () => {
+import { useDebounce } from "@/hooks/useDebounce";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { Fragment, useState } from "react";
+import SearchResult from "./SearchResult";
+
+const Search = ({ docs }) => {
+  const router = useRouter();
+  const [term, setTerm] = useState("");
+  const [searchResult, setSearchResult] = useState([]);
+
+  const handleChange = (e) => {
+    const value = e.target.value;
+    setTerm(value);
+    doSearch(value);
+  };
+
+  const doSearch = useDebounce((term) => {
+    const found = docs.filter((doc) => {
+      return doc.title.toLowerCase().includes(term.toLowerCase());
+    });
+    console.log(found);
+    setSearchResult(found);
+  }, 500);
+
+  function closeSearchResults(event) {
+    event.preventDefault();
+    router.push(event.target.href);
+    setTerm("");
+  }
+
   return (
     <Fragment>
       <div className="lg:block lg:max-w-md lg:flex-auto">
@@ -19,10 +48,19 @@ const Search = () => {
           <input
             type="text"
             placeholder="Search..."
+            value={term}
+            onChange={handleChange}
             className="flex-1 focus:border-none focus:outline-none"
           />
         </button>
       </div>
+      {term && term.trim().length > 0 && (
+        <SearchResult
+          results={searchResult}
+          term={term}
+          closeSearchResults={closeSearchResults}
+        />
+      )}
     </Fragment>
   );
 };
