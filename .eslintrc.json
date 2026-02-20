@@ -1,5 +1,5 @@
 {
-  "extends": "next/core-web-vitals",
+  "extends": ["next/core-web-vitals", "plugin:import/errors"],
   "rules": {
     "no-undef": "error",
     "no-unused-vars": [
@@ -10,10 +10,19 @@
         "caughtErrorsIgnorePattern": "^_"
       }
     ],
+    "import/no-unresolved": "error",
     "react/jsx-no-undef": "error",
     "react/jsx-uses-vars": "error",
     "react/no-unknown-property": "error",
     "react/prop-types": "off",
     "react/react-in-jsx-scope": "off"
+  },
+  "settings": {
+    "import/resolver": {
+      "alias": {
+        "map": [["@", "./"]],
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
+    }
   }
 }

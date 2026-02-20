@@ -1,6 +1,7 @@
 import React from 'react';
 import Logo from './Logo';
 import Search from './Search';
+import Sidebar from './Sidebar';
 
 const Header = ({docs}) => {
   return (
@@ -12,7 +13,7 @@ const Header = ({docs}) => {
           <Search docs={docs} />
         </div>
       </div>
-      {/* <Sidebar docs={docs} /> */}
+      <Sidebar docs={docs} />
     </header>
   );
 };
